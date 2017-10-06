@@ -1,0 +1,78 @@
+<html>
+<head>
+	<title>Little firmware demo project</title>
+</head>
+<body>
+
+	<h1>Firmware demo project</h1>
+	
+	<h2>Welcome :-)</h2>
+	
+	<p>
+		Hi and welcome to the firmware demo project!
+		<br />
+		This is a toy project that should give you a tiny insight into our world and especially into how we do server development at Robart.
+		Please note though that this does not entirely reflect how we are developing server applications. 
+		Most importantly we do not use <a href="https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/html/jdbc.html" target="_blank">Jdbc(Template)</a> directly anymore but rather the (in our opinion) more convenient <a href="https://docs.spring.io/spring-data/jpa/docs/current/reference/html/" target="_blank">Spring data JPA</a>.
+		However if one has not worked with the Java Persistence API (JPA) or Hibernate before we thought that it is easier to stick to JDBC and direct SQL queries instead.
+		<br />
+		Furthermore we usually separate things more clearly and create separate task specific controllers / repositories. Also we normally have a service layer in-between the controller and the repository but that simply does not matter for this project.
+		<br />
+		Lastly, nevermind if you don't entirely understand all the things that are going on. Spring may seem a bit magic at the beginning but one starts to see behind its tricks once one gets more involved with it. 
+	</p>
+	
+	<h2>The Setting</h2>
+	<ul>
+		<li>This server should simulate a simplistic firmware server. This means a server which allows an admin to store a firmware on the server and associate it with one or more robots.</li>
+		<li>For a user it should be possible to download the firmware for a robot by simply giving the name of the robot.</li>
+		<li>All the interfaces should be REST calls. This means that for all the tasks it should be possible to use a tool like <a href="https://curl.haxx.se/" target="_blank">curl</a> to access the interface.</li>	
+		<li>As a simplification no authentication is used in this demo application. This means that all controller actions are simply available without giving any user credentials.</li>
+	</ul>
+	
+	<h2>Hints</h2>
+	<ul>
+		<li>
+			The used database is in-memory (H2). You can access it via <a href="http://localhost:8080/h2-console" target="_blank">http://localhost:8080/h2-console</a>
+			<br />
+			The required settings can be found in the application.yml file. For the JDBC URL please specify "jdbc:h2:mem:demo_project" for "User Name" "h2user" and for "Password" "h2pass".
+		</li>
+		<li>
+			The classes for the controller (DemoprojectController.java) and the Jdbc Repository (DemoprojectRepository.java) already exist. Just extend it with the logic you need in order to complete the requested tasks. 
+		</li>	
+	</ul>
+	
+	<h2>The Tasks</h2>
+	
+	<ol>
+		<li><b>CRUD (Create Read Update Delete) for firmwares</b></li>
+		Extend the DemoprojectController (sample call e.g. <a href="http://localhost:8080/robots/all" target="_blank">http://localhost:8080/robots/all</a>) as well as the DemoprojectRepository such that is possible to:
+		<ul>
+			<li>List all available firmwares</li>
+			<li>Upload a new firmware</li>
+			<li>Delete a specific firmware</li>
+			<li>Update a specific firmware (change the name or the data)</li>
+		</ul>
+		<br />
+		
+		<li><b>Associate one or multiple robots with a particular firmware</b></li>
+		Extend the DemoprojectController as well as the DemoprojectRepository such that is possible to associate one or multiple robots with a particular firmware.
+		<br />
+		For that task you also need to extend the database as the current data model does not cater for this at the moment. 
+		Just add your SQL statements to <span style="font-family: Courier;">db/migration/V1__Init.sql</span>. They will be applied automatically next time you start the application.
+		<br />
+		One firmware should be asignable to multiple robots. 
+		It should be possible to pass mutliple robot IDs to the controller to associate a bunch of robots with one firmware at once.
+		<br />
+		It would be great if you design the feature such that you keep a history of all the firmwares that have ever been associated with a robot inclusive of when this association has happened.  
+	 	<br /><br />
+	 	
+	 	<li><b>Allow to download the latest firmware of a robot by giving its name</b></li>
+	 	Finally, this is the user side of the server.
+	 	<br />
+	 	By placing a simple HTTP call that includes the robot's name as parameter, one should get the currently associated firmware for the given robot.
+		
+	</ol>
+	
+
+</body>
+</html>
