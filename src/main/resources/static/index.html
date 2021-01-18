@@ -42,7 +42,7 @@
 	
 	<ol>
 		<li><b>CRUD (Create Read Update Delete) for firmwares</b></li>
-		Extend the DemoprojectController (sample call e.g. <a href="http://localhost:8080/robots/all" target="_blank">http://localhost:8080/robots/all</a>) as well as the DemoprojectRepository such that is possible to:
+		Extend the project(sample call e.g. <a href="http://localhost:8080/robots/all" target="_blank">http://localhost:8080/robots/all</a>) such that is possible to:
 		<ul>
 			<li>List all available firmwares</li>
 			<li>Upload a new firmware</li>
@@ -52,7 +52,7 @@
 		<br />
 		
 		<li><b>Associate one or multiple robots with a particular firmware</b></li>
-		Extend the DemoprojectController as well as the DemoprojectRepository such that is possible to associate one or multiple robots with a particular firmware.
+		Extend the project such that is possible to associate one or multiple robots with a particular firmware.
 		<br />
 		For that task you also need to extend the database as the current data model does not cater for this at the moment. 
 		Just add your SQL statements to <span style="font-family: Courier;">db/migration/V1__Init.sql</span>. They will be applied automatically next time you start the application.
@@ -68,11 +68,19 @@
 	 	<br />
 	 	By placing a simple HTTP call that includes the robot's name as parameter, one should get the currently associated firmware for the given robot.
 		<br /><br />
-		<li><b>Securing this API is a bonus</b></li>
-		<br />
-
 	</ol>
-	
+	<h2>Bonus objectives</h2>
+    <ol>
+		<li>Secure the api so that authentication needed to access it. The details up to you</li>
+		<li>The service starts getting lots of traffic. Therefore we needed scale up your application. Adjust your solution for us to be able to run with multiple instances.(Data consistency between instances should be ensured.)</li>
+	</ol>
+	<h2>Your solution will be evaluated based on</h2>
+	<ul>
+		<li>Correctness</li>
+		<li>Api Design(RESTful conventions & Best practices)</li>
+		<li>Maintainability(Readable & reusable codes,tests)</li>
+
+	</ul>
 
 </body>
 </html>
