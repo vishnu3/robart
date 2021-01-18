@@ -17,8 +17,6 @@
 		However if one has not worked with the Java Persistence API (JPA) or Hibernate before we thought that it is easier to stick to JDBC and direct SQL queries instead.
 		<br />
 		Furthermore we usually separate things more clearly and create separate task specific controllers / repositories. Also we normally have a service layer in-between the controller and the repository but that simply does not matter for this project.
-		<br />
-		Lastly, nevermind if you don't entirely understand all the things that are going on. Spring may seem a bit magic at the beginning but one starts to see behind its tricks once one gets more involved with it. 
 	</p>
 	
 	<h2>The Setting</h2>
@@ -26,7 +24,6 @@
 		<li>This server should simulate a simplistic firmware server. This means a server which allows an admin to store a firmware on the server and associate it with one or more robots.</li>
 		<li>For a user it should be possible to download the firmware for a robot by simply giving the name of the robot.</li>
 		<li>All the interfaces should be REST calls. This means that for all the tasks it should be possible to use a tool like <a href="https://curl.haxx.se/" target="_blank">curl</a> to access the interface.</li>	
-		<li>As a simplification no authentication is used in this demo application. This means that all controller actions are simply available without giving any user credentials.</li>
 	</ul>
 	
 	<h2>Hints</h2>
@@ -60,8 +57,8 @@
 		For that task you also need to extend the database as the current data model does not cater for this at the moment. 
 		Just add your SQL statements to <span style="font-family: Courier;">db/migration/V1__Init.sql</span>. They will be applied automatically next time you start the application.
 		<br />
-		One firmware should be asignable to multiple robots. 
-		It should be possible to pass mutliple robot IDs to the controller to associate a bunch of robots with one firmware at once.
+		One firmware should be assignable to multiple robots.
+		It should be possible to pass multiple robot IDs to the controller to associate a bunch of robots with one firmware at once.
 		<br />
 		It would be great if you design the feature such that you keep a history of all the firmwares that have ever been associated with a robot inclusive of when this association has happened.  
 	 	<br /><br />
@@ -70,7 +67,10 @@
 	 	Finally, this is the user side of the server.
 	 	<br />
 	 	By placing a simple HTTP call that includes the robot's name as parameter, one should get the currently associated firmware for the given robot.
-		
+		<br /><br />
+		<li><b>Securing this API is a bonus</b></li>
+		<br />
+
 	</ol>
 	
 
