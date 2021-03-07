@@ -1,0 +1,40 @@
+
+#Step-1
+Download Project
+
+#Step-2
+got to root folder of project
+
+#Step-3
+create jar of project
+
+#Step-4
+Create Docker file for project (sample Attached in email)
+
+#Step-5
+run below command to create docker image of project jar.
+
+docker build -f <Docker file name> -t <image name> .
+
+eg.
+root-directory>docker build -f Dockerfile -t robart-demo-docker .
+
+Example:
+C:\VishnuJ\interviewQ\Robart-Austria\demo-project\demo-project>docker build -f Dockerfile -t robart-demo-docker .
+
+
+#Step-6
+verify docker image
+
+ >docker images
+
+#Step-7
+Run docker image
+
+C:\VishnuJ\interviewQ\Robart-Austria\demo-project\demo-project>docker run -p 8085:8085 robart-demo-docker
+
+
+
+
+
+

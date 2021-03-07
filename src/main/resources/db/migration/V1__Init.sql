@@ -25,3 +25,17 @@ INSERT INTO Robots (name, hardware_version) VALUES ('robot_10', 'hardware-model-
 
 INSERT INTO Firmwares (name, data) VALUES ('firmware_stock_A', 'R29vZCB5b3Uga25vdyBob3cgdG8gZGVjb2RlIGJhc2UgNjQgOi0p');
 INSERT INTO Firmwares (name, data) VALUES ('firmware_upgrade_A_1', 'WWV0IGFnYWluIGEgYmFzZSA2NCBlbmNvZGVkIHRleHQu');
+
+
+
+CREATE TABLE robot_firmware_mapping (
+    id bigint auto_increment,
+    robot_name VARCHAR,
+    firmware_name VARCHAR,
+    create_ts VARCHAR,
+    update_ts VARCHAR,
+    isActive INT,
+    CONSTRAINT isActive_constraint CHECK(isActive = 1 OR isActive = 0),
+    CONSTRAINT robot_firmware_mapping_pk PRIMARY KEY (robot_name,firmware_name,isActive)
+);
+
