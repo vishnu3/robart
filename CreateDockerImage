@@ -1,17 +1,19 @@
+Steps to create Docker Image
+
+
 
 #Step-1
-Download Project
+Create Docker file for project (sample Attached in email, Also added in root directory of project)
 
 #Step-2
-got to root folder of project
+Open the terminal window to run below docker command.
 
-#Step-3
-create jar of project
+better to got to root directory of project and open terminal.
+As path will be pointed to root directory,
+so no manual action needed for giving, project path while running command.
 
-#Step-4
-Create Docker file for project (sample Attached in email)
 
-#Step-5
+#Step-2
 run below command to create docker image of project jar.
 
 docker build -f <Docker file name> -t <image name> .
@@ -23,13 +25,16 @@ Example:
 C:\VishnuJ\interviewQ\Robart-Austria\demo-project\demo-project>docker build -f Dockerfile -t robart-demo-docker .
 
 
-#Step-6
-verify docker image
+#Step-3
+verify docker image by below command
 
  >docker images
 
 #Step-7
 Run docker image
+
+docker run -p 8085:8085 robart-demo-docker
+eg,
 
 C:\VishnuJ\interviewQ\Robart-Austria\demo-project\demo-project>docker run -p 8085:8085 robart-demo-docker
 
