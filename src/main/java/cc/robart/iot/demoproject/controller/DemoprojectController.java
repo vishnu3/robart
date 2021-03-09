@@ -1,12 +1,14 @@
 package cc.robart.iot.demoproject.controller;
 
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import cc.robart.iot.demoproject.persistent.Firmware;
 import cc.robart.iot.demoproject.persistent.Mapping;
 import cc.robart.iot.demoproject.service.DemoprojectService;
+import org.h2.util.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,27 +17,19 @@ import org.springframework.web.bind.annotation.*;
 import cc.robart.iot.demoproject.persistent.Robot;
 import cc.robart.iot.demoproject.repository.DemoprojectRepository;
 
-/**
- * The only and single purpose controller of this demo project.
- *
- */
+
 @RestController
 public class DemoprojectController {
 	
 	private DemoprojectRepository mainRepository;
 	private DemoprojectService service;
-	
-	// Never mind the MainRepository not being constructed explicitly.
-	// Spring will automatically create this bean and inject it into the constructor here.
+
 	public DemoprojectController(DemoprojectRepository mainRepository, DemoprojectService service) {
         this.service = service;
 		this.mainRepository = mainRepository;
 	}
 	
-	/**
-	 * Returns a list of all robots currently stored in the database.
-	 * @return List of all robots.
-	 */
+
 	@GetMapping(path="/robots/all", produces=MediaType.APPLICATION_JSON_VALUE)
 	public List<Robot> getAllRobots() {
 		return mainRepository.findAllRobots();
@@ -47,71 +41,88 @@ public class DemoprojectController {
 	}
 
 	@PutMapping(path="/firmware/upload")
-	public HttpStatus addFirmware(@RequestBody Firmware firmware){
+	public ResponseEntity<String> addFirmware(@RequestBody Firmware firmware){
 	   try{
-	   	mainRepository.addFirmware(firmware);
-	   return HttpStatus.OK;
+	   	int i = mainRepository.addFirmware(firmware);
+	   if(i>0){
+		   return new ResponseEntity<>("Firmware added",HttpStatus.OK);}
+	   else {
+		   return new ResponseEntity<>("Failed to add firmware",HttpStatus.INTERNAL_SERVER_ERROR);
+	   }
 	   }
 	   catch (Exception e){
-	   	return HttpStatus.INTERNAL_SERVER_ERROR;
+		   return new ResponseEntity<>("Failed to add firmware",HttpStatus.INTERNAL_SERVER_ERROR);
 	   }
 	}
 
 	@DeleteMapping("/firmware/remove/{name}")
-	public HttpStatus deleteFirmware(@PathVariable String name){
+	public ResponseEntity<String>  deleteFirmware(@PathVariable String name){
 		try{
-			mainRepository.deleteFirmware(name);
-			return HttpStatus.OK;
+			int i = mainRepository.deleteFirmware(name);
+			if(i>0){
+				return new ResponseEntity<>("Firmware deleted",HttpStatus.OK);}
+			else {
+				return new ResponseEntity<>("Failed to delete firmware",HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		}
 		catch (Exception e){
-			return HttpStatus.INTERNAL_SERVER_ERROR;
+			return new ResponseEntity<>("Failed to delete firmware",HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PostMapping("/firmware/updateName")
-	public HttpStatus updateFirmwareName(@RequestBody Firmware firmware){
+	public ResponseEntity<String> updateFirmwareName(@RequestBody Firmware firmware){
 		try{
-			mainRepository.updateFirmware(firmware,true);
-			return HttpStatus.OK;
+			int i = mainRepository.updateFirmware(firmware,true);
+			if(i>0){
+				return new ResponseEntity<>("Firmware name updated",HttpStatus.OK);}
+			else {
+				return new ResponseEntity<>("Failed to update firmware name",HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		}catch (Exception e){
-			return HttpStatus.INTERNAL_SERVER_ERROR;
+			 return new ResponseEntity<>("Failed to update firmware name",HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PostMapping("/firmware/updateData")
-	public HttpStatus updateFirmwareData(@RequestBody Firmware firmware){
+	public ResponseEntity<String> updateFirmwareData(@RequestBody Firmware firmware){
 		try{
-			mainRepository.updateFirmware(firmware,false);
-			return HttpStatus.OK;
+			int i = mainRepository.updateFirmware(firmware,false);
+			if(i>0){
+				return new ResponseEntity<>("Firmware data updated",HttpStatus.OK);}
+			else {
+				return new ResponseEntity<>("Failed to update firmware data",HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		}catch (Exception e){
-			return HttpStatus.INTERNAL_SERVER_ERROR;
+			return new ResponseEntity<>("Failed to update firmware data",HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PostMapping("/mapping")
 	public ResponseEntity<String> createMapping(@RequestBody Mapping mapping){
 		try{
-			System.out.println(mapping.toString());
 			return new ResponseEntity<>(
 					service.processMappingData(mapping),
 					HttpStatus.OK);
 		}catch (Exception e){
-			e.printStackTrace();
 			return new ResponseEntity<>(
-					"Server Error",
+					"Failed to create Mapping ",
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@GetMapping("/user/update/firmware/{name}")
-	public String downLoadFirmware(@PathVariable String name){
+	public ResponseEntity<String> downLoadFirmware(@PathVariable String name){
 		try{
-			return mainRepository.getLatestFirmware(name);
+			String firmwareName =  mainRepository.getLatestFirmware(name);
+			if(!StringUtils.isNullOrEmpty(firmwareName)){
+              return new ResponseEntity<>(firmwareName,HttpStatus.OK);
+			}else{
+				return new ResponseEntity<>("firmware name not found",HttpStatus.OK);
+			}
 		}catch (Exception e){
-			e.printStackTrace();
-			return "Server Error";
+			return new ResponseEntity<>("Server error! while searching firmware name",HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-
 	}
 	
 	/**

@@ -28,26 +28,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .withUser("admin").password("admin").roles("ADMIN");
     }
 
-//    @Override
-//    protected void configure(HttpSecurity httpSecurity) throws Exception {
-//
-//        httpSecurity
-//                .authorizeRequests()
-//                .antMatchers("**/user/**").hasRole("USER")
-//                .anyRequest()
-//                .fullyAuthenticated()
-//                //.antMatchers("**/rest/*")
-//                .and()
-//                //.addFilterBefore(customFilter(), BasicAuthenticationFilter.class)
-//                .httpBasic();
-//        httpSecurity.csrf().disable();
-//
-//    }
-
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-
-        httpSecurity.csrf().disable();
 
         httpSecurity
                 .authorizeRequests()
@@ -56,6 +38,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/mapping").hasRole("ADMIN")
                 .antMatchers("/firmware/**").hasRole("ADMIN")
                 .antMatchers("/robots/**").hasRole("ADMIN")
+                .antMatchers("/").permitAll()
+                .antMatchers("/h2/**").permitAll()
+                .antMatchers("/console/**").permitAll()
                 .anyRequest()
                 .fullyAuthenticated()
                 .and()
@@ -69,6 +54,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .httpBasic();
 
+        httpSecurity.csrf().disable();
+        httpSecurity.headers().frameOptions().disable();
+
 
     }
 
@@ -76,13 +64,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public static NoOpPasswordEncoder noOpPasswordEncoder(){
         return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
     }
-/*
-    @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint(){
-        return new CustomAuthenticationEntryPoint();
-    }*/
-
-
-
 
 }
